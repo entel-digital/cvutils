@@ -1,2 +1,4 @@
-# cvutils
-Rutinas auxiliares para computer vision.
+```bash
+pip install -e .
+
+```

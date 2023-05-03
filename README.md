@@ -1,13 +1,20 @@
 # Computer Vision Utilities
 Computer vision tools for computer vision engineers.
 
-## Acknowledgments
+## Features
 
+* TODO
+
+
+
+## Acknowledgments & Credits
 First and foremost, we would like to express our deepest gratitude to Odd Industries for their incredible work on the first version of this library. Their dedication to coding and openly releasing the initial version has paved the way for the development of this project, which has since evolved and grown.
 
 While the API for this release may not be backward compatible, the invaluable contributions from Odd Industries have helped shape the general concept of the OpenCV pipeline that we have embraced in this library. Their pioneering work has served as a solid foundation, enabling us to build upon and improve the project further.
 
 As Entel Ocean we are happy to take this library to the furure
+
+This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [waynerv/cookiecutter-pypackage](https://github.com/waynerv/cookiecutter-pypackage) project template.
 
 ## Install
 

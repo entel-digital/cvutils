@@ -34,3 +34,12 @@ python setup.py sdist bdist_wheel
 ```bash
 pip install --upgrade cvutils-x.y.z-py3-none-any.whl
 ```
+
+# Usage
+```bash
+cvutils test
+```
+
+
+## Release/liberation policy
+Odd Industries's cvutils had a many functionality with wide range of software engineering quality (documentation, abstraction, testing, updated requirements, etc). That same issue made a lot of work to release it open responsibly. At Entel Ocean, having access to previous code and engineer, we will be releasing only features that we are committed to use and support. If this repo opening takes traction, we'll open an issue where the community also could bring old features to present.

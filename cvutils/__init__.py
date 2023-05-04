@@ -23,7 +23,7 @@ def open_cap_validator(source):
 # @click.option('--record/--no-record', default=False)
 # @click.option('--plot/--no-plot', default=False)
 # def golive(source, record, plot):
-#     from cvutils import live
+#     from tupuedes import live
 #     click.echo('Going live...')
 #     live.record(source, plot, record)
 

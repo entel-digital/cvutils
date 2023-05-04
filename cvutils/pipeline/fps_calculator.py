@@ -1,5 +1,5 @@
-from tupuedes.pipeline import Pipeline
-from tupuedes.live.utils import CountsPerSec
+from cvutils.pipeline import Pipeline
+from cvutils.live.utils import CountsPerSec
 
 
 class FPSCalculator(Pipeline):

@@ -1,7 +1,7 @@
 import cv2
 import os
 
-from tupuedes.pipeline import Pipeline
+from cvutils.pipeline import Pipeline
 
 
 class SaveVideo(Pipeline):

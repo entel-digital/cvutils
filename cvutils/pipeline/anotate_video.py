@@ -1,4 +1,4 @@
-from tupuedes.pipeline import Pipeline
+from cvutils.pipeline import Pipeline
 #from mediapipe.solutions import pose
 #from .libs.pose_tracker import PoseTracker
 import mediapipe as mp

@@ -1,8 +1,7 @@
 import cv2
 
-from tupuedes.pipeline import Pipeline
-from tupuedes.capture.file_video_capture import FileVideoCapture
-from tupuedes.capture.webcam_video_capture import WebcamVideoCapture
+from cvutils.pipeline import Pipeline
+from cvutils.capture.webcam_video_capture import WebcamVideoCapture
 
 
 class CaptureVideo(Pipeline):

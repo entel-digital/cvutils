@@ -1,6 +1,6 @@
 import cv2
 
-from tupuedes.pipeline import Pipeline
+from cvutils.pipeline import Pipeline
 
 
 class DisplayVideo(Pipeline):

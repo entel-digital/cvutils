@@ -1,10 +1,10 @@
 import pandas as pd
 from pathlib import Path
-from .pipeline import Pipeline
+from .pipeline_task import PipelineTask
 
 
-class SaveData(Pipeline):
-    """Simple Pipeline task to save annotations to a file using pandas.
+class SaveData(PipelineTask):
+    """Simple Pipeline_task to save annotations to a file using pandas.
        Annotations are passed as an array of rows, inside data['src'] dict
        in 'columns' order
     """

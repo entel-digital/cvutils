@@ -1,10 +1,10 @@
 import cv2
 
-from cvutils.pipeline import Pipeline
+from cvutils.pipeline_task.pipeline_task import PipelineTask
 from cvutils.capture.webcam_video_capture import WebcamVideoCapture
 
 
-class CaptureVideo(Pipeline):
+class CaptureVideo(PipelineTask):
     """Pipeline task to capture video stream from file or webcam
     using faster, threaded method to reading video frames."""
 
@@ -39,7 +39,7 @@ class CaptureVideo(Pipeline):
     def cleanup(self):
         """Closes video file or capturing device.
 
-        This function should be triggered after the pipeline completes.
+        This function should be triggered after the pipeline_task completes.
         """
 
         self.cap.stop()

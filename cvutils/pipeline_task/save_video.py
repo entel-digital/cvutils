@@ -1,10 +1,10 @@
 import cv2
 import os
 
-from cvutils.pipeline import Pipeline
+from cvutils.pipeline_task.pipeline_task import PipelineTask
 
 
-class SaveVideo(Pipeline):
+class SaveVideo(PipelineTask):
     """Pipeline task to save video."""
 
     def __init__(self, src, filename, fps=30, fourcc='MJPG'):

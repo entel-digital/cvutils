@@ -1,11 +1,11 @@
-from cvutils.pipeline import Pipeline
+from cvutils.pipeline_task.pipeline_task import PipelineTask
 #from mediapipe.solutions import pose
 #from .libs.pose_tracker import PoseTracker
 import mediapipe as mp
 import cv2
 
 
-class AnnotateVideo(Pipeline):
+class AnnotateVideo(PipelineTask):
     def __init__(self, dst, annotate_pose=False, annotate_fps=False, annotate_aruco=False):
         self.dst = dst
         self.annotate_pose = annotate_pose

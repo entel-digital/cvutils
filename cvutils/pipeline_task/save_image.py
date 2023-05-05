@@ -1,10 +1,10 @@
 import os
 import cv2
 
-from .pipeline import Pipeline
+from .pipeline_task import PipelineTask
 
 
-class SaveImage(Pipeline):
+class SaveImage(PipelineTask):
     """Pipeline task to save images."""
 
     def __init__(self, src, path, image_ext="jpg", jpg_quality=None, png_compression=None):

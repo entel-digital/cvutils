@@ -1,5 +1,5 @@
-class Pipeline(object):
-    """Common pipeline class fo all pipeline tasks."""
+class PipelineTask(object):
+    """Common pipeline_task class fo all pipeline_task tasks."""
 
     def __init__(self, source=None):
         self.source = source
@@ -8,7 +8,7 @@ class Pipeline(object):
         return self.generator()
 
     def generator(self):
-        """Yields the pipeline data."""
+        """Yields the pipeline_task data."""
 
         while self.has_next():
             try:
@@ -18,8 +18,8 @@ class Pipeline(object):
             except StopIteration:
                 return
 
-    def __or__(self, other):
-        """Allows to connect the pipeline task using | operator."""
+    def __and__(self, other):
+        """Allows to connect the pipeline_task using | operator."""
 
         if other is not None:
             other.source = self.generator()
@@ -28,12 +28,12 @@ class Pipeline(object):
             return self
 
     def filter(self, data):
-        """Overwrite to filter out the pipeline data."""
+        """Overwrite to filter out the pipeline_task data."""
 
         return True
 
     def map(self, data):
-        """Overwrite to map the pipeline data."""
+        """Overwrite to map the pipeline_task data."""
 
         return data
 

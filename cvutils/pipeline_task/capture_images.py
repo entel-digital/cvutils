@@ -1,10 +1,10 @@
 import cv2
 
-from .pipeline import Pipeline
+from .pipeline_task import PipelineTask
 from .utils import fs
 
 
-class CaptureImages(Pipeline):
+class CaptureImages(PipelineTask):
     """Pipeline task to capture images from directory."""
 
     def __init__(self, path, valid_exts=(".jpg", ".png"), level=None, contains=None):

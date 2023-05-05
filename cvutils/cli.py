@@ -29,13 +29,13 @@ def open_cap_validator(source):
 @main.command()
 @click.option('--source', default=0, help='stream source', type=open_cap_validator)
 def test(source):
-    from cvutils.pipeline.capture_video import CaptureVideo
-    from cvutils.pipeline.fps_calculator import FPSCalculator
-    from cvutils.pipeline.display_video import DisplayVideo
-    from cvutils.pipeline.anotate_video import AnnotateVideo
+    from cvutils.pipeline_task.capture_video import CaptureVideo
+    from cvutils.pipeline_task.fps_calculator import FPSCalculator
+    from cvutils.pipeline_task.display_video import DisplayVideo
+    from cvutils.pipeline_task.anotate_video import AnnotateVideo
     from tqdm import tqdm
 
-    # pipeline items
+    # pipeline_task items
     capture_video = CaptureVideo(source)
     # click.echo("Capture created", err=True)
     # infer_landmarks = LandmarksRegresor(min_detection_confidence=0.5, min_tracking_confidence=0.5)
@@ -47,11 +47,11 @@ def test(source):
     display_video = DisplayVideo("image", "Test 123", )
     # save_video = SaveVideo("image", f"{date_time_base_path}.avi")
 
-    # Create image processing pipeline
+    # Create image processing pipeline_task
     pipeline = (
-                capture_video | fps_calculator | annotate_video | display_video
+                capture_video & fps_calculator & annotate_video & display_video
     )
-    # Iterate through pipeline
+    # Iterate through pipeline_task
     try:
         # metrics.log_event('exercise start')
         for _ in tqdm(pipeline,

@@ -1,9 +1,9 @@
 import cv2
 
-from cvutils.pipeline import Pipeline
+from cvutils.pipeline_task.pipeline_task import PipelineTask
 
 
-class DisplayVideo(Pipeline):
+class DisplayVideo(PipelineTask):
     """Pipeline task to display images as a video."""
 
     def __init__(self, src, window_name=None, org=None, full_screen=False):

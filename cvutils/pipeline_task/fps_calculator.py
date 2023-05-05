@@ -1,8 +1,8 @@
-from cvutils.pipeline import Pipeline
+from cvutils.pipeline_task.pipeline_task import PipelineTask
 from cvutils.live.utils import CountsPerSec
 
 
-class FPSCalculator(Pipeline):
+class FPSCalculator(PipelineTask):
     def __init__(self):
         self.cps = CountsPerSec().start()
         super().__init__()

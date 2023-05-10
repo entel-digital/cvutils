@@ -19,7 +19,7 @@ class PipelineTask(object):
                 return
 
     def __and__(self, other):
-        """Allows to connect the pipeline_task using | operator."""
+        """Allows to connect the pipeline_task using & operator."""
 
         if other is not None:
             other.source = self.generator()

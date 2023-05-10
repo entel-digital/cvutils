@@ -1,5 +1,5 @@
 tqdm
-opencv-python
+opencv-contrib-python==4.6.0.66
 mediapipe
 click
 

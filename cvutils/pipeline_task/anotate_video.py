@@ -1,4 +1,5 @@
 from cvutils.pipeline_task.pipeline_task import PipelineTask
+from cvutils.pipeline_task.utils.color_palette import ColorPalette
 #from mediapipe.solutions import pose
 #from .libs.pose_tracker import PoseTracker
 import mediapipe as mp
@@ -11,6 +12,10 @@ class AnnotateVideo(PipelineTask):
         self.annotate_pose = annotate_pose
         self.annotate_fps = annotate_fps
         self.annotate_aruco = annotate_aruco
+        self.color_palette = ColorPalette()
+        self.width = 3
+        self.font_type = cv2.FONT_HERSHEY_PLAIN
+        self.font_size = 3
 
         super().__init__()
         # self.metadata = MetadataCatalog.get(self.metadata_name)
@@ -67,21 +72,23 @@ class AnnotateVideo(PipelineTask):
                 mp.solutions.pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp.solutions.drawing_styles.get_default_pose_landmarks_style())
 
+    #TODO: agregar al texto ejes (x,y,z)
     def aruco_annotator(self, data):
         dst_image = data[self.dst]
+        category_color = self.color_palette.category['unique id'].bgr
         if 'aruco' in data:
             for key, corners in data['aruco'].items():
                 topLeft, topRight, bottomRight, bottomLeft = corners
                 # draw the bounding box of the ArUCo detection
-                cv2.line(dst_image, topLeft, topRight, (0, 255, 0), 2)
-                cv2.line(dst_image, topRight, bottomRight, (0, 255, 0), 2)
-                cv2.line(dst_image, bottomRight, bottomLeft, (0, 255, 0), 2)
-                cv2.line(dst_image, bottomLeft, topLeft, (0, 255, 0), 2)
+                cv2.line(dst_image, topLeft, topRight, category_color, self.width)
+                cv2.line(dst_image, topRight, bottomRight, category_color, self.width)
+                cv2.line(dst_image, bottomRight, bottomLeft, category_color, self.width)
+                cv2.line(dst_image, bottomLeft, topLeft, category_color, self.width)
 
                 # draw the ArUco marker ID on the image
                 cv2.putText(dst_image, str(key),
-                            (topLeft[0], topLeft[1] - 15), cv2.FONT_HERSHEY_SIMPLEX,
-                            0.5, (0, 255, 0), 2)
+                            (topLeft[0], topLeft[1] - 15), self.font_type,
+                            self.font_size, category_color, self.width)
 
     def mode_title_annotator(self, data):
         dst_image = data[self.dst]

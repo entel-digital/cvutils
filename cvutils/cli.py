@@ -33,13 +33,14 @@ def test(source):
     from cvutils.pipeline_task.fps_calculator import FPSCalculator
     from cvutils.pipeline_task.display_video import DisplayVideo
     from cvutils.pipeline_task.anotate_video import AnnotateVideo
+    from cvutils.pipeline_task.aruco_finder import ArucoFinder
     from tqdm import tqdm
 
     # pipeline_task items
     capture_video = CaptureVideo(source)
     # click.echo("Capture created", err=True)
     # infer_landmarks = LandmarksRegresor(min_detection_confidence=0.5, min_tracking_confidence=0.5)
-    # infer_aruco = ArucoFinder(source="image", aruco_map=aruco_map)
+    infer_aruco = ArucoFinder(source="image")
     # mode_manager = ModeManager(aruco_map, mode, debug=True)
     # analyse_coordinates = AnalysePose(['sentadillas'], store=True, store_path=f"{date_time_base_path}.csv")
     fps_calculator = FPSCalculator()
@@ -49,7 +50,7 @@ def test(source):
 
     # Create image processing pipeline_task
     pipeline = (
-                capture_video & fps_calculator & annotate_video & display_video
+                capture_video & infer_aruco & fps_calculator & annotate_video & display_video
     )
     # Iterate through pipeline_task
     try:

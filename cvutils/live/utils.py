@@ -15,7 +15,7 @@ class VideoGet:
         self.frame_height = int(self.stream.get(4))
         self.stopped = False
 
-    def start(self):    
+    def start(self):
         from threading import Thread
 
         Thread(target=self.get, args=()).start()
@@ -33,7 +33,7 @@ class VideoGet:
 
 class VideoWritte:
     def __init__(self, filename, size, fps = 15, codec_str = 'mp4v') -> None:
-        self.writter = cv2.VideoWriter(filename, 
+        self.writter = cv2.VideoWriter(filename,
                                 cv2.VideoWriter_fourcc(*codec_str),
                                 fps, size)
 
@@ -60,11 +60,13 @@ class CountsPerSec:
 
     def get_fps(self):
         elapsed_time = time.time() - self._start_time
+        if elapsed_time == 0:
+            return 0
         fps = self.tick_counter / elapsed_time
         if elapsed_time > self._tick_secs:
             self._start_time = time.time()
             self.tick_counter = 0
-        
+
         return fps
 
 

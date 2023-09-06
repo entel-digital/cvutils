@@ -4,6 +4,7 @@ Computer vision tools for computer vision engineers.
 ## Features
 
 * TODO
+* refactor bounding boxes to shapely geometry
 
 
 

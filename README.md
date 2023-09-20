@@ -3,8 +3,9 @@ Computer vision tools for computer vision engineers.
 
 ## Features
 
-* TODO
-* refactor bounding boxes to shapely geometry
+### TODO
+* Inprove documentation on installing on linux, apple silicon and windows
+* Refactor bounding boxes to shapely geometry
 
 
 
@@ -19,19 +20,26 @@ This package was created with [Cookiecutter](https://github.com/audreyr/cookiecu
 
 ## Install
 
-## Install in dev mode
+## Install in dev mode (2023)
 
+1. Create a conda enviroment like:
+
+```shell
+conda create -n "cv310" python=3.10
+```
+
+2. Install this module
 ```bash
 pip install -e .
 ```
 
-## Build
+## Build (2024)
 
 ```bash
 python setup.py sdist bdist_wheel
 ```
 
-## Wheel install
+## Wheel install (2024)
 ```bash
 pip install --upgrade cvutils-x.y.z-py3-none-any.whl
 ```

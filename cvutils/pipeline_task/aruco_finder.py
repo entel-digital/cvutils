@@ -5,8 +5,14 @@ import cv2
 class ArucoFinder(PipelineTask):
     def __init__(self, aruco_map: dict = None, **kwargs):
         super().__init__(**kwargs)
-        self.arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
-        self.arucoParams = cv2.aruco.DetectorParameters_create()
+        # API changed for 4.7.x
+        dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
+        parameters = cv2.aruco.DetectorParameters()
+        self.detector = cv2.aruco.ArucoDetector(dictionary, parameters)
+
+        #self.arucoDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
+        #self.arucoParams = cv2.aruco.DetectorParameters_create()
+        # / API changed for 4.7.x
         if aruco_map is not None:
             self.aruco_map = aruco_map
         else:
@@ -22,8 +28,11 @@ class ArucoFinder(PipelineTask):
     #TODO: exponer ejes (x,y,z)
     def find_aruco(self, data):
         image = data["image"]
-        (corners, ids, rejected) = cv2.aruco.detectMarkers(image, self.arucoDict,
-                                                           parameters=self.arucoParams)
+        # API changed for 4.7.x
+        #(corners, ids, rejected) = cv2.aruco.detectMarkers(image, self.arucoDict,
+        #                                                   parameters=self.arucoParams)
+        (corners, ids, rejected) = self.detector.detectMarkers(image)
+        # / API changed for 4.7.x
 
         aruco_found = {}
         if len(corners) > 0:

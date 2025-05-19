@@ -1,5 +1,41 @@
-tqdm
-opencv-contrib-python==4.6.0.66
-mediapipe
-click
+# Core Computer Vision & YOLO dependencies
+opencv-python==4.11.0.86
+opencv-contrib-python==4.11.0.86
+ultralytics==8.3.85
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.6.0
+tensorflow==2.18.0
+tensorflow_intel==2.18.0
+mediapipe==0.10.20
 
+# Data processing & math
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.15.1
+sympy==1.13.1
+
+# Visualización
+matplotlib==3.10.0
+seaborn==0.13.2
+
+# Herramientas CLI y logging
+click==8.0.1
+rich==13.9.4
+Werkzeug==3.1.3
+tqdm==4.67.1
+
+# Web & Networking
+requests==2.32.3
+urllib3==2.3.0
+
+# Otros esenciales
+pyyaml==6.0.2
+typing_extensions==4.12.2
+protobuf==4.25.5
+pillow==10.2.0
+
+# Performance & utils adicionales
+thop==0.1.1.post2209072238
+ultralytics-thop==2.0.14
+psutil==6.1.1

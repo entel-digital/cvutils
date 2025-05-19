@@ -1,5 +1,6 @@
 import time
 import cv2
+from collections import deque
 
 class VideoGet:
     """
@@ -38,35 +39,26 @@ class VideoWritte:
                                 fps, size)
 
 class CountsPerSec:
-    """
-    Class that tracks the number of occurrences ("counts") of an
-    arbitrary event and returns the frequency in occurrences
-    (counts) per second. The caller must increment the count.
-    """
-
-    def __init__(self):
-        self._start_time = None
-        self.full_counter = 0
-        self.tick_counter = 0
-        self._tick_secs = 1
+    def __init__(self, buffer_size=30):
+        self.buffer_size = buffer_size
+        self.frame_times = deque(maxlen=buffer_size)
 
     def start(self):
-        self._start_time = time.time()
+        self.frame_times.clear()
+        self.frame_times.append(time.time())
         return self
 
     def increment(self):
-        self.full_counter += 1
-        self.tick_counter += 1
+        self.frame_times.append(time.time())
 
     def get_fps(self):
-        elapsed_time = time.time() - self._start_time
+        if len(self.frame_times) < 2:
+            return 0.0
+        elapsed_time = self.frame_times[-1] - self.frame_times[0]
         if elapsed_time == 0:
-            return 0
-        fps = self.tick_counter / elapsed_time
-        if elapsed_time > self._tick_secs:
-            self._start_time = time.time()
-            self.tick_counter = 0
-
+            return 0.0
+        # El número de intervalos es uno menos que el número de tiempos registrados
+        fps = (len(self.frame_times) - 1) / elapsed_time
         return fps
 
 

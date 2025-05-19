@@ -10,7 +10,7 @@ class CaptureVideo(PipelineTask):
 
     def __init__(self, src):
         # if isinstance(src, int):
-        self.cap = WebcamVideoCapture(src, queue_size=3).start()
+        self.cap = WebcamVideoCapture(src, queue_size=3, use_hw_accel=True).start()
         self.frame_count = -1
         # else:
         #     self.cap = FileVideoCapture(src).start()

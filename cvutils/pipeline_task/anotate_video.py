@@ -16,41 +16,21 @@ class AnnotateVideo(PipelineTask):
         self.width = 3
         self.font_type = cv2.FONT_HERSHEY_PLAIN
         self.font_size = 3
-
         super().__init__()
-        # self.metadata = MetadataCatalog.get(self.metadata_name)
-        # self.instance_mode = instance_mode
-        # self.frame_num = frame_num
-        # self.predictions = predictions
-        # self.pose_flows = pose_flows
 
-        # self.cpu_device = torch.device("cpu")
-        #self.video_visualizer = VideoVisualizer(self.metadata, self.instance_mode)
+    def map(self, data_list):
+        for data in data_list:
+            dst_image = data["image"].copy()
+            data[self.dst] = dst_image
 
-    def map(self, data):
-        dst_image = data["image"].copy()
-        data[self.dst] = dst_image
+            if self.annotate_aruco:
+                self.aruco_annotator(data)
+            if self.annotate_pose:
+                self.pose_annotator(data)
+            if self.annotate_fps:
+                self.fps_annotator(data)
 
-        # if self.frame_num:
-        #     self.annotate_frame_num(data)
-        # if self.predictions:
-        #     self.annotate_predictions(data)
-        # if self.pose_flows:
-        #     self.annotate_pose_flows(data)
-        if self.annotate_aruco:
-            self.aruco_annotator(data)
-        if self.annotate_pose:
-            self.pose_annotator(data)
-        if self.annotate_fps:
-            self.fps_annotator(data)
-
-        #self.mode_title_annotator(data)
-        #self.mode_counters_annotator(data)
-
-        # if 'debug_line' in data['mode'].keys():
-        #     self.debug_line_annotator(data)
-
-        return data
+        return data_list
 
     def fps_annotator(self, data):
         dst_image = data[self.dst]

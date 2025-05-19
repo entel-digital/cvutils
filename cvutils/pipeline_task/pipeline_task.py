@@ -1,7 +1,7 @@
 class PipelineTask(object):
     """Common pipeline_task class fo all pipeline_task tasks."""
 
-    def __init__(self, source=None):
+    def __init__(self, source=None, **kwargs):
         self.source = source
 
     def __iter__(self):
@@ -41,4 +41,3 @@ class PipelineTask(object):
         """Overwrite to stop the generator in certain conditions."""
 
         return True
-

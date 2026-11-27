@@ -6,7 +6,8 @@ def walk_to_level(path, level=None):
         yield from os.walk(path)
         return
 
-    path = path.rstrip(os.path.sep)
+    if path != os.path.sep:
+        path = path.rstrip(os.path.sep)
     num_sep = path.count(os.path.sep)
     for root, dirs, files in os.walk(path):
         yield root, dirs, files
@@ -27,8 +28,9 @@ def list_files(path, valid_exts=None, level=None, contains=None):
                 continue
 
             # Determine the file extension of the current file
-            ext = filename[filename.rfind("."):].lower()
-            if valid_exts and ext.endswith(valid_exts):
+            _, ext = os.path.splitext(filename)
+            ext = ext.lower()
+            if valid_exts is None or ext.endswith(valid_exts):
                 # Construct the path to the file and yield it
                 file = os.path.join(root_dir, filename)
                 yield file

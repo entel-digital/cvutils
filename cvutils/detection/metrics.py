@@ -30,11 +30,15 @@ class ConfusionMatrix():
         '''
 
         det_boxes = det_boxes[det_boxes[:, 5] > self.confidence_thresh] if len(det_boxes) > 0 else np.array([])
-        gt_classes = gt_boxes[:, 0].astype(np.int16)
-        det_classes = det_boxes[:, 0].astype(np.int16) if len(det_boxes) > 0 else np.array([])
+        gt_classes = gt_boxes[:, 0].astype(np.int16) if len(gt_boxes) > 0 else np.array([], dtype=np.int16)
+        det_classes = det_boxes[:, 0].astype(np.int16) if len(det_boxes) > 0 else np.array([], dtype=np.int16)
 
-        all_ious = box_iou_matrix(gt_boxes[:, 1:], det_boxes[:, 1:5]) if len(det_boxes) > 0 else np.array([])
-        want_idx = np.where(all_ious > self.iou_thresh)
+        all_ious = (
+            box_iou_matrix(gt_boxes[:, 1:], det_boxes[:, 1:5])
+            if len(gt_boxes) > 0 and len(det_boxes) > 0
+            else np.array([])
+        )
+        want_idx = np.where(all_ious > self.iou_thresh) if all_ious.size > 0 else (np.array([], dtype=np.intp), np.array([], dtype=np.intp))
 
         all_matches = []
         for i in range(want_idx[0].shape[0]):
@@ -60,9 +64,10 @@ class ConfusionMatrix():
                 if gt_class != det_class:
                     data['wrong_class'].append({'gt': gt_boxes[i], 'det': det_boxes[int(all_matches[all_matches[:, 0] == i, 1][0])]})
                 else:
-                    iou_ex = self.iou(gt_boxes[i], det_boxes[int(all_matches[all_matches[:, 0] == i, 1][0])])
+                    det_idx = int(all_matches[all_matches[:, 0] == i, 1][0])
+                    iou_ex = self.iou(gt_boxes[i, 1:5], det_boxes[det_idx, 1:5])
                     self.ious_tp[gt_class].append(iou_ex)
-                    data['TP'].append({'gt': gt_boxes[i], 'det': det_boxes[int(all_matches[all_matches[:, 0] == i, 1][0])], 'iou': iou_ex})
+                    data['TP'].append({'gt': gt_boxes[i], 'det': det_boxes[det_idx], 'iou': iou_ex})
             else:
                 gt_class = gt_classes[i]
                 self.matrix[(gt_class), self.num_classes] += 1
@@ -95,19 +100,20 @@ class ConfusionMatrix():
                                   'Precision': TP/(TP+FP) if TP+FP > 0 else 0,
                                   'Recall': TP/(TP+FN) if TP+FN > 0 else 0,
                                   'F1': 2*TP/(2*TP+FP+FN) if TP+FP+FN > 0 else 0,
-                                  'Average IOU (TP)': np.mean(self.ious_tp[i]),
+                                  'Average IOU (TP)': float(np.mean(self.ious_tp[i])) if self.ious_tp[i] else 0.0,
                                   'Support': int(np.sum(cm[:, i]))
                                   })
 
         total_samples = int(np.sum([m['Support'] for m in class_metrics]))
-        general_metrics['Accuracy'] = np.sum([m['TP'] for m in class_metrics])/total_samples
-        general_metrics['Average Precision'] = np.mean([m['Precision'] for m in class_metrics])
-        general_metrics['Average Recall'] = np.mean([m['Recall'] for m in class_metrics])
-        general_metrics['Average IOU (TP)'] = np.sum([np.sum(itp) for itp in self.ious_tp.values()])/np.sum([len(itp) for itp in self.ious_tp.values()])
-        general_metrics['Average F1'] = np.mean([m['F1'] for m in class_metrics])
-        general_metrics['Weighted Precision'] = np.sum([m['Precision']*m['Support'] for m in class_metrics])/total_samples
-        general_metrics['Weighted Recall'] = np.sum([m['Recall']*m['Support'] for m in class_metrics])/total_samples
-        general_metrics['Weighted F1'] = np.sum([m['F1']*m['Support'] for m in class_metrics])/total_samples
+        total_tps = int(np.sum([len(itp) for itp in self.ious_tp.values()]))
+        general_metrics['Accuracy'] = np.sum([m['TP'] for m in class_metrics])/total_samples if total_samples > 0 else 0.0
+        general_metrics['Average Precision'] = np.mean([m['Precision'] for m in class_metrics]) if class_metrics else 0.0
+        general_metrics['Average Recall'] = np.mean([m['Recall'] for m in class_metrics]) if class_metrics else 0.0
+        general_metrics['Average IOU (TP)'] = float(np.sum([np.sum(itp) for itp in self.ious_tp.values()])/total_tps) if total_tps > 0 else 0.0
+        general_metrics['Average F1'] = np.mean([m['F1'] for m in class_metrics]) if class_metrics else 0.0
+        general_metrics['Weighted Precision'] = np.sum([m['Precision']*m['Support'] for m in class_metrics])/total_samples if total_samples > 0 else 0.0
+        general_metrics['Weighted Recall'] = np.sum([m['Recall']*m['Support'] for m in class_metrics])/total_samples if total_samples > 0 else 0.0
+        general_metrics['Weighted F1'] = np.sum([m['F1']*m['Support'] for m in class_metrics])/total_samples if total_samples > 0 else 0.0
         general_metrics['Total samples'] = total_samples
         return class_metrics, general_metrics
 
@@ -130,8 +136,9 @@ class ConfusionMatrix():
 
         boxAArea = (l_xmax - l_xmin + 1) * (l_ymax - l_ymin + 1)
         boxBArea = (r_xmax - r_xmin + 1) * (r_ymax - r_ymin + 1)
+        denom = float(boxAArea + boxBArea - intersection)
 
-        return intersection / float(boxAArea + boxBArea - intersection)
+        return intersection / denom if denom > 0 else 0.0
 
 
 class Evaluator():

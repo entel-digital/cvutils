@@ -21,6 +21,7 @@ def threshold_scale_detections(detections, width, height, confidence_thresh=0.5,
         # filter out weak detections by requiring a minimum confidence
         if d.confidence <= confidence_thresh:
             continue
+        d = copy.deepcopy(d)
         # scale and translate detection boundingbox
         d.tlwh = (d.tlwh * np.array([width, height, width, height]) + np.array([translate[0], translate[1], 0, 0])) * scale
         # handle detections with masks:
@@ -46,6 +47,7 @@ def threshold_detections(detections, confidence_thresh=0.5, mask_thresh=0.5, des
             continue
         # filter out weak detections by requiring a minimum confidence
         if d.confidence > confidence_thresh:
+            d = copy.deepcopy(d)
             if d.mask is not None:
                 # threshold to create a *binary* mask
                 d.mask = (d.mask > mask_thresh)
